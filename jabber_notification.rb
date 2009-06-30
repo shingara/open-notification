@@ -3,13 +3,15 @@ require 'nanite'
 require 'haml'
 require 'yaml'
 
-#Starting mapper to nanite agent
-Thread.new do
-  until EM.reactor_running?
-    sleep 1
+configure do
+  #Starting mapper to nanite agent
+  Thread.new do
+    until EM.reactor_running?
+      sleep 1
+    end
+    conf = YAML::load_file('config.yml')
+    Nanite.start_mapper(:host => conf[:host], :user => conf[:user], :pass => conf[:pass], :vhost => conf[:vhost], :log_level => conf[:log_level])
   end
-  conf = YAML::load_file('config.yml')
-  Nanite.start_mapper(:host => conf[:host], :user => conf[:user], :pass => conf[:pass], :vhost => conf[:vhost], :log_level => conf[:log_level])
 end
 
 get '/' do
