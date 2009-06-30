@@ -1,0 +1,7 @@
+---
+:pass: testing
+:vhost: /nanite
+:user: nanite
+:identity: fred
+:host: localhost
+:log_level: info
