@@ -1,0 +1,7 @@
+= form_for(@jabber, :action => resource(:jabbers)) do
+  %p
+    = text_field :to, :label => 'To'
+  %p
+    = text_field :text, :label => 'Message'
+  %p
+    = submit :send
