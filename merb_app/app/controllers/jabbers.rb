@@ -1,6 +1,6 @@
 class Jabbers < Application
 
-  before :ensure_authenticated
+  before :ensure_authenticated, :unless => :public_access
 
   def index
     render
@@ -18,6 +18,20 @@ class Jabbers < Application
       redirect resource(:jabbers, :new)
     else
       render :new
+    end
+  end
+
+  private
+
+  def public_access
+    if params[:api_key]
+      user = User.get(params[:api_key])
+      if user
+        session.user = user
+        params[:jabber] = {}
+        params[:jabber][:to] = params[:to]
+        params[:jabber][:text] = params[:text]
+      end
     end
   end
   
