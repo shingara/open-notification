@@ -25,13 +25,10 @@ class Jabbers < Application
 
   def public_access
     if params[:api_key]
-      user = User.get(params[:api_key])
-      if user
-        session.user = user
-        params[:jabber] = {}
-        params[:jabber][:to] = params[:to]
-        params[:jabber][:text] = params[:text]
-      end
+      session.user = User.get(params[:api_key])
+      params[:jabber] = {}
+      params[:jabber][:to] = params[:to]
+      params[:jabber][:text] = params[:text]
     end
   end
   
