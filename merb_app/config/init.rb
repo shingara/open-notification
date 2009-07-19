@@ -12,7 +12,7 @@ Merb::Config.use do |c|
   # cookie session store configuration
   c[:session_secret_key]  = '6f29bcb20c69d0d74c786a6bab7caabd7f41f4d0'  # required for cookie session store
   c[:session_id_key] = '_merb_app_session_id' # cookie session id key, defaults to "_session_id"
-  c[:adapter] = 'thin'
+  c[:adapter] = 'thin' unless c[:adapter] == 'irb'
 end
  
 Merb::BootLoader.before_app_loads do
@@ -29,3 +29,5 @@ Merb::BootLoader.after_app_loads do
     Nanite.start_mapper(:host => conf[:host], :user => conf[:user], :pass => conf[:pass], :vhost => conf[:vhost], :log_level => conf[:log_level])
   end
 end
+
+require 'lib/open_notification/version.rb'

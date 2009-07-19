@@ -1,0 +1,36 @@
+!!! Strict
+%html
+  %head
+    %title= title_header
+    = css_include_tag 'base'
+    = css_include_tag 'default'
+  %body
+    #container
+      #header
+        %h1= link_to 'OpenNotification', '/'
+        #user-navigation
+          %ul
+            - unless authenticated?
+              %li= link_to('Login', url(:login))
+              %li= link_to('Register', url(:new_user))
+            - else
+              %li= link_to('My profile', url(:edit_user, session.user))
+              %li= link_to 'Logout', url(:logout)
+          .clear
+
+        - if message[:notice]
+          .notice
+            %p.notice{:class => 'flash'}= message[:notice]
+    #wrapper
+      #main
+        .block
+          = catch_content :for_layout
+        #footer
+          .block
+            %p
+              Powered by
+              %a{:href => 'http://opennotification.rubyforge.org'} OpenNotification
+              = '-'
+              = OpenNotification::VERSION
+        .clear
+      .clear

@@ -72,7 +72,6 @@ class ::Gem::DependencyInstaller
       return []
     end
     
-    p dep
     old_fg(dep)
   end
 end

@@ -1,12 +1,14 @@
-
+require 'lib/couchrest_salted_user.rb'
 class User < CouchRest::ExtendedDocument
 
+  include CouchRest::Validation
+  extend Merb::Authentication::Mixins::SaltedUser::CouchRestClassMethods
+
+  property :login
   property :email
-  property :hashed_password
-  property :salt
-  property :permission_level
 
   view_by :email
+  view_by :login
 
   timestamps!
 
