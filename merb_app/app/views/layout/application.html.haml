@@ -19,7 +19,7 @@
           .clear
         #main-navigation
           %ul
-            %li.first{:class => 'current'}= link_to 'Jabber', resource(:jabbers, :new)
+            %li.first{:class => 'current'}= link_to 'Jabber', resource(:jabbers)
           .clear
 
         - if message[:notice]
