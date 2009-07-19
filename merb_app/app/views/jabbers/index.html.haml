@@ -1,1 +1,23 @@
-You're in index of the Jabber controller.
+#block-tables.block
+
+  .content
+    .inner
+      %table.table
+        %thead
+          %tr
+            %th.first Id
+            %th Body
+            %th To
+            %th.last Send at
+        %tbody
+          - @jabbers.each do |jabber|
+            %tr{:class => "#{cycle('odd','even')} jabber" }
+              %td 1
+              %td= jabber.text
+              %td= jabber.to
+              %td= jabber.send_at
+
+      .actions-bar
+        .actions
+          = link_to 'New', resource(:jabbers, :new)
+

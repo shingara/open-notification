@@ -17,6 +17,10 @@
               %li= link_to('My profile', url(:edit_user, session.user))
               %li= link_to 'Logout', url(:logout)
           .clear
+        #main-navigation
+          %ul
+            %li.first{:class => 'current'}= link_to 'Jabber', resource(:jabbers, :new)
+          .clear
 
         - if message[:notice]
           .notice

@@ -5,6 +5,7 @@ class Jabber < CouchRest::ExtendedDocument
   property :to
   property :text
   property :from
+  property :send_at
 
   timestamps!
 

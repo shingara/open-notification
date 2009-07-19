@@ -3,6 +3,7 @@ class Jabbers < Application
   before :ensure_authenticated, :unless => :public_access
 
   def index
+    @jabbers = Jabber.by_from(:key => session.user.id)
     render
   end
 
