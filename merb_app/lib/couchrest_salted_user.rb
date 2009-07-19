@@ -11,7 +11,10 @@ class Merb::Authentication
             validates_present        :password, :if => proc{|m| m.password_required?}
             validates_is_confirmed   :password, :if => proc{|m| m.password_required?}
             
-            save_callback :before,   :encrypt_password
+            def save
+              encrypt_password
+              super
+            end
           end # base.class_eval
           
         end # self.extended

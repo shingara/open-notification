@@ -12,4 +12,8 @@ class User < CouchRest::ExtendedDocument
 
   timestamps!
 
+  validates_present :login
+  validates_present :email
+  validates_present :crypted_password
+
 end
