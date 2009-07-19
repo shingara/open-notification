@@ -12,10 +12,13 @@ class Jabbers < Application
   end
 
   def create
-    jabber = Jabber.new(params[:jabber])
-    jabber.save
-    jabber.send_notification
-    redirect resource(:jabbers, :new)
+    @jabber = Jabber.new(params[:jabber].merge(:from => session.user.id))
+    if @jabber.save
+      @jabber.send_notification
+      redirect resource(:jabbers, :new)
+    else
+      render :new
+    end
   end
   
 end

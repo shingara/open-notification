@@ -34,7 +34,7 @@ class Users < Application
     @user = User.get(id)
     raise NotFound unless @user
     if @user.update_attributes(user)
-       redirect resource(:projects)
+       redirect '/'
     else
       display @user, :edit
     end

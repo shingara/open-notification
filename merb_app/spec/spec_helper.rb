@@ -21,5 +21,21 @@ Spec::Runner.configure do |config|
   config.before(:all) do
     DataMapper.auto_migrate! if Merb.orm == :datamapper
   end
+
+  def jabber_helper(params={})
+    Jabber.new({:to => "#{/\w+/.gen}.#{/\w+/.gen}@gmail.com",
+               :text => 'ok',
+              :from => user_helper}.merge(params))
+  end
+
+  def user_helper(params={})
+    User.new({:login => /\w+/.gen,
+             :email => "#{/\w+/.gen}.#{/\w+/.gen}@gmail.com",
+             :password => 'notification',
+             :password_confirmation => 'notification'}.merge(params))
+
+  end
   
 end
+
+
