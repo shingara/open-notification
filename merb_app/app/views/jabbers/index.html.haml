@@ -6,15 +6,17 @@
         %thead
           %tr
             %th.first Id
-            %th Body
             %th To
+            %th Body
+            %th Requested at
             %th.last Send at
         %tbody
           - @jabbers.each do |jabber|
             %tr{:class => "#{cycle('odd','even')} jabber" }
               %td 1
-              %td= jabber.text
               %td= jabber.to
+              %td= jabber.text
+              %td= jabber.created_at
               %td= jabber.send_at
 
       .actions-bar
