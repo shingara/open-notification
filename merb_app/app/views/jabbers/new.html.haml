@@ -1,7 +1,22 @@
-= form_for(@jabber, :action => resource(:jabbers)) do
-  %p
-    = text_field :to, :label => 'To'
-  %p
-    = text_field :text, :label => 'Message'
-  %p
-    = submit :send
+#block-forms.block
+  .content
+
+    %h2 Create a new ticket
+
+    .inner
+      .flash
+        = message[:error]
+        = error_messages_for @jabber
+
+      = form_for(@jabber, :action => resource(:jabbers), :class => 'form') do
+
+        .group
+          %label.label{:for => 'jabber[to]'} To :
+          = text_field :to, :class => 'text_field'
+
+        .group
+          %label.label{:for => 'jabber[text]'} Text :
+          = text_area  :text, :cols => 40, :rows => 15, :class => 'text_area'
+
+        %div{:class => 'group navform'}
+          = submit :send, :class => 'button'
