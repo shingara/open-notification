@@ -3,9 +3,7 @@ class Jabbers < Application
   before :ensure_authenticated, :unless => :public_access
 
   def index
-    #really wiered if descending=false need :startkey.
-    #if descending=true need :endkey
-    @jabbers = Jabber.by_from(:endkey => [session.user.id], :descending => true)
+    @jabbers = session.user.last_jabbers #(:per_page => 10, :page => (params[:page] || 1))
     render
   end
 

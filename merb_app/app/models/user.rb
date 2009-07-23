@@ -16,4 +16,10 @@ class User < CouchRest::ExtendedDocument
   validates_present :email
   validates_present :crypted_password
 
+  # if descending=true need inverse startkey and endkey. Cf documentation
+  # http://wiki.apache.org/couchdb/HTTP_view_API#view_parameters
+  def last_jabbers(paginate={})
+    Jabber.by_from(:endkey => [self.id], :startkey => [self.id, {}], :descending => true).paginate(paginate)
+  end
+
 end

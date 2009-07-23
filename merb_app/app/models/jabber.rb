@@ -29,4 +29,5 @@ class Jabber < CouchRest::ExtendedDocument
       end
     end
   end
+
 end
