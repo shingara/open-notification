@@ -18,6 +18,15 @@ class Jabber < CouchRest::ExtendedDocument
         emit([doc['from'], doc['created_at']], null);
       }
   }"
+
+  view_by :count_from , :map => "function(doc) {
+      if ((doc['couchrest-type'] == 'Jabber') && doc['from']) {
+        emit(doc['from'], 1);
+      }
+  }",
+  :reduce => "function(key,values) {
+    return sum(values);
+  }"
   view_by :to
 
 

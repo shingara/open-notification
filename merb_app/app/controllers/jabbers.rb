@@ -3,7 +3,7 @@ class Jabbers < Application
   before :ensure_authenticated, :unless => :public_access
 
   def index
-    @jabbers = session.user.last_jabbers #(:per_page => 10, :page => (params[:page] || 1))
+    @jabbers = session.user.last_jabbers(:per_page => 10, :page => (params[:page] || 1))
     render
   end
 

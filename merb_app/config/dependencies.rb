@@ -21,6 +21,8 @@ dependency "merb-exceptions", merb_gems_version
 dependency "merb-haml", merb_gems_version
 
 dependency "ezmobius-nanite", "0.4.1.1", :require_as => 'nanite' 
+dependency "mattetti-couchrest", "0.32", :require_as => 'couchrest'
 dependency "mohiam-merb_couchrest", "0.1.6", :require_as => 'merb_couchrest'
 dependency "thin"
 dependency "randexp"
+dependency "will_paginate_couchrest", "3.0.1", :require_as => "will_paginate"

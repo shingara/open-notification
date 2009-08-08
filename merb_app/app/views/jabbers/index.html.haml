@@ -19,6 +19,8 @@
               %td= jabber.created_at
               %td= jabber.send_at
 
+      = will_paginate @jabbers
+
       .actions-bar
         .actions
           = link_to 'New', resource(:jabbers, :new)

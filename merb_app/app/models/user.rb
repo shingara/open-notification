@@ -19,7 +19,12 @@ class User < CouchRest::ExtendedDocument
   # if descending=true need inverse startkey and endkey. Cf documentation
   # http://wiki.apache.org/couchdb/HTTP_view_API#view_parameters
   def last_jabbers(paginate={})
-    Jabber.by_from(:endkey => [self.id], :startkey => [self.id, {}], :descending => true).paginate(paginate)
+    Jabber.by_from(:endkey => [self.id], 
+                   :startkey => [self.id, {}], 
+                   :descending => true).paginate(paginate.merge(
+                     :total => Jabber.by_count_from(
+                       :key => self.id, 
+                       :reduce => true)['rows'][0]["value"]))
   end
 
 end
