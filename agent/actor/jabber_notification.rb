@@ -8,16 +8,25 @@ class JabberNotification
   expose :notif
 
   def initialize
-    conf = YAML::load_file('config_jabber.yml')
-    jid = JID::new(conf[:jid])
-    @cl = Client::new(jid)
-    @cl.connect
-    @cl.auth(conf[:password])
+    connection
     super
   end
   
   def notif(payload)
     m = Message::new(payload['to'], payload['text'])
     @cl.send m
+  rescue IOError
+    false
+    connection
+  end
+
+private
+
+  def connection
+    conf = YAML::load_file('config_jabber.yml')
+    jid = JID::new(conf[:jid])
+    @cl = Client::new(jid)
+    @cl.connect
+    @cl.auth(conf[:password])
   end
 end
