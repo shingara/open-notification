@@ -22,9 +22,14 @@ class User < CouchRest::ExtendedDocument
     Jabber.by_from(:endkey => [self.id], 
                    :startkey => [self.id, {}], 
                    :descending => true).paginate(paginate.merge(
-                     :total => Jabber.by_count_from(
-                       :key => self.id, 
-                       :reduce => true)['rows'][0]["value"]))
+                     :total => jabbers_count))
+  end
+
+  def jabbers_count
+    j = Jabber.by_count_from(
+      :key => self.id, 
+      :reduce => true)['rows'][0]
+    j ? j["value"] : 0
   end
 
 end
