@@ -16,13 +16,13 @@ dependency "merb-auth-core", merb_gems_version
 dependency "merb-auth-more", merb_gems_version
 dependency "merb-auth-slice-password", merb_gems_version
 dependency "merb-param-protection", merb_gems_version
-dependency "merb-mailer", merb_gems_version
 dependency "merb-exceptions", merb_gems_version
 dependency "merb-haml", merb_gems_version
 
 dependency "ezmobius-nanite", "0.4.1.1", :require_as => 'nanite' 
-dependency "mattetti-couchrest", "0.32", :require_as => 'couchrest'
-dependency "mohiam-merb_couchrest", "0.1.6", :require_as => 'merb_couchrest'
+dependency "mongomapper", :require_as => 'mongomapper'
+dependency "shingara-merb_mongomapper", :require_as => 'merb_mongomapper'
+dependency "yeastymobs-machinist_mongomapper", :source => 'http://gems.github.com', :require_as => 'machinist/mongomapper'
 dependency "thin"
 dependency "randexp"
 dependency "will_paginate_couchrest", "3.0.1", :require_as => "will_paginate"
