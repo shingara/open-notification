@@ -21,6 +21,7 @@ Merb::BootLoader.before_app_loads do
 end
  
 Merb::BootLoader.after_app_loads do
+  load_from_source('will_paginate')
   # This will get executed after your app's classes have been loaded.
   if Merb.environment != 'test'
     Thread.new do
@@ -34,3 +35,8 @@ Merb::BootLoader.after_app_loads do
 end
 
 require 'lib/open_notification/version.rb'
+
+def load_from_source(src)
+  $:.unshift File.join(Merb.root, "src/#{src}/lib")
+  require "src/#{src}/init.rb"
+end
