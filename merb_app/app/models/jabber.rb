@@ -2,10 +2,10 @@ class Jabber < CouchRest::ExtendedDocument
 
   include CouchRest::Validation
   
-  property :to
-  property :text
-  property :from
-  property :send_at
+  key :to, String, :required => true
+  key :text, String, :required => true
+  key :from_id, String, :required => true
+  key :send_at, Time
 
   timestamps!
 
@@ -30,11 +30,15 @@ class Jabber < CouchRest::ExtendedDocument
   view_by :to
 
 
+  after_create :send_notification
+
   def send_notification
     if valid?
-      Nanite.request('/jabber_notification/notif', 'to' => to, 'text' => text) do |response|
+      Nanite.request('/jabber_notification/notif', 
+                     'to' => to, 
+                     'text' => text) do |response|
         self.send_at = Time.now
-        self.save
+        save
       end
     end
   end

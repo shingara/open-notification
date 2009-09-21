@@ -3,7 +3,8 @@ class Jabbers < Application
   before :ensure_authenticated, :unless => :public_access
 
   def index
-    @jabbers = session.user.last_jabbers(:per_page => 10, :page => (params[:page] || 1))
+    @jabbers = session.user.last_jabbers(:per_page => 10, 
+                                         :page => (params[:page] || 1))
     render
   end
 
@@ -13,9 +14,8 @@ class Jabbers < Application
   end
 
   def create
-    @jabber = Jabber.new(params[:jabber].merge(:from => session.user.id))
+    @jabber = Jabber.new(params[:jabber].merge(:from => session.user))
     if @jabber.save
-      @jabber.send_notification
       redirect resource(:jabbers, :new)
     else
       render :new
