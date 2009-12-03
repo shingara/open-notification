@@ -1,0 +1,28 @@
+- @title = "edit my profile"
+
+#block-forms.block
+  .content
+    %h2 Edit your profile
+
+    .inner
+      .flash
+        = error_messages_for :user
+
+      - form_for(@user, :html => {:class => 'form'}) do |f|
+        .group
+          %label.label{:for => 'user[email]'} Email
+          = f.text_field :email, :class => 'text_field'
+        .group
+          %label.label{:for => 'user[firstname]'} Firstname
+          = f.text_field :firstname, :class => 'text_field'
+        .group
+          %label.label{:for => 'user[lastname]'} Lastname
+          = f.text_field :lastname, :class => 'text_field'
+        .group
+          %label.label{:for => 'user[password]'} Password
+          = f.password_field :password, :class => 'text_field'
+        .group
+          %label.label{:for => 'user[password_confirmation]'} Password confirmation
+          = f.password_field :password_confirmation, :class => 'text_field'
+        %div{:class => 'group navform'}
+          = submit_tag "Update", :class => 'button'

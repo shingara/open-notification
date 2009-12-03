@@ -1,0 +1,40 @@
+!!! Strict
+%html
+  %head
+    %title= title_header
+    = stylesheet_link_tag 'base'
+    = stylesheet_link_tag 'default'
+  %body
+    #container
+      #header
+        %h1= link_to 'OpenNotification', '/'
+        #user-navigation
+          %ul
+            - unless user_signed_in?
+              %li= link_to('Login', new_user_session_url)
+              %li= link_to('Register', new_user_url)
+            - else
+              %li= link_to('My profile', edit_user_url(current_user))
+              %li= link_to 'Logout', destroy_user_session_url
+          .clear
+        #main-navigation
+          %ul
+            %li.first{:class => 'current'}= link_to 'Jabber', jabbers_url
+          .clear
+
+        - if flash[:notice]
+          .notice
+            %p.notice{:class => 'flash'}= flash[:notice]
+    #wrapper
+      #main
+        .block
+          = yield
+        #footer
+          .block
+            %p
+              Powered by
+              %a{:href => 'http://open-notifications.rubyforge.org'} OpenNotification
+              = '-'
+              = OpenNotification::VERSION
+        .clear
+      .clear

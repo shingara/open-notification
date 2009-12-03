@@ -1,0 +1,40 @@
+- @title = "New user"
+
+#box
+  #block-signup.block
+    %h2 Create an account
+
+    .content
+      = flash[:error]
+      = error_messages_for :user
+
+      - form_for(@user, :class=> 'form') do |f|
+        .group
+          .left
+            %label.label{:for => 'user[login]'} Login
+          .right
+            = f.text_field :login, :class => 'text_field'
+          .clear
+        .group
+          .left
+            %label.label{:for => 'user[email]'} Email
+          .right
+            = f.text_field  :email, :class => 'text_field'
+          .clear
+        .group
+          .left
+            %label.label{:for => 'user[password]'} Password
+          .right
+            = f.password_field  :password, :class => 'text_field'
+          .clear
+        .group
+          .left
+            %label.label{:for => 'user[password_confirmation]'} Password confirmation
+          .right
+            = f.password_field  :password_confirmation, :class => 'text_field'
+          .clear
+
+        %div{:class => 'group navform'}
+          .right
+            = submit_tag "Create", :class => 'button'
+          .clear
