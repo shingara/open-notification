@@ -1,0 +1,32 @@
+#block-forms.block
+  .content
+
+    %h2 Send a message
+
+    .inner
+      .flash
+        = error_messages_for :message
+
+      - form_for(@message, :html => { :class => 'form' }) do |f|
+
+        .group
+          = f.label :body, 'Body :', :class => 'label'
+          = f.text_area :body, :cols => 40, :rows => 15, :class => 'text_area'
+
+        .column
+          - f.fields_for :message_kinds do |m|
+            %div{:class => 'column left'}
+              .group
+                = m.label :channel, 'Channel :', :class => 'label'
+                = m.select :channel, MessageKind::CHANNEL
+            %div{:class => 'column right'}
+              .group
+                = m.label :to, 'To :', :class => 'label'
+                = m.text_field :to
+        .clear
+
+        %div{:class => 'group navform'}
+          = f.submit :send, :class => 'button'
+          or
+          = link_to 'Cancel', messages_url
+

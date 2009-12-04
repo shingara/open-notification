@@ -9,7 +9,7 @@ class Message
   timestamps!
 
   belongs_to :from, :class_name => User
-  many :message_kinds
+  has_many :message_kinds
 
   after_create :send_notification
 
@@ -18,6 +18,12 @@ class Message
     :message => 'need recipients'
   include_errors_from :message_kinds
 
+  def message_kinds_attributes=(attributes)
+    attributes.each do |index, value|
+      message_kinds.build(value)
+    end
+  end
+  
 
 
   def send_notification

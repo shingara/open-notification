@@ -1,0 +1,34 @@
+#block-tables.block
+
+  .content
+    .inner
+      %table.table
+        %thead
+          %tr
+            %th.first Id
+            %th Body
+            %th.last Requested at
+        %tbody
+          - @messages.each do |message|
+            %tr{:class => "#{cycle('odd','even')} jabber" }
+              %td 1
+              %td= message.body
+              %td= message.created_at
+            %tr
+              %td{:colspan => 3}
+                %ul
+                  - message.message_kinds.each do |kind|
+                    %li
+                      Send to 
+                      = kind.to
+                      by
+                      = kind.channel
+                      at
+                      = kind.send_at
+
+      = will_paginate @messages
+
+      .actions-bar
+        .actions
+          = link_to 'New', new_message_url
+
