@@ -9,11 +9,11 @@ class JabbersController < ApplicationController
   end
 
   def new
-    @jabber = Jabber.new
+    @jabber = Message.new
   end
 
   def create
-    @jabber = Jabber.new(params[:jabber].merge(:from => current_user))
+    @jabber = Message.new(params[:jabber].merge(:from => current_user))
     if @jabber.save
       flash[:notice] = 'Jabber notification send'
       redirect_to new_jabber_url

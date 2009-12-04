@@ -21,9 +21,14 @@ Factory.define :admin, :parent => :user do |u|
   u.global_admin true
 end
 
-Factory.define :jabber do |j|
+Factory.define :message do |m|
+  m.body { /[:paragraph:]/.gen }
+  m.from_id { Factory(:user).id }
+  m.message_kinds { [Factory.build(:jabber)] }
+end
+
+Factory.define :jabber, :class => :message_kind do |j|
   j.to { /[:email:]/.gen }
-  j.text { /[:paragraph:]/.gen }
-  j.from_id { Factory(:user).id }
+  j.channel { 'Jabber' }
   j.send_at { Time.now }
 end

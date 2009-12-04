@@ -11,7 +11,7 @@ class User
   key :lastname, String
   key :global_admin, Boolean
 
-  many :jabbers, :foreign_key => 'from_id'
+  many :messages, :foreign_key => 'from_id'
 
   validates_true_for :global_admin,
     :logic => lambda { allways_one_global_admin },
