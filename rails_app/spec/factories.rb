@@ -29,6 +29,6 @@ end
 
 Factory.define :jabber, :class => :message_kind do |j|
   j.to { /[:email:]/.gen }
-  j.channel { 'Jabber' }
+  j.channel { 'jabber' }
   j.send_at { Time.now }
 end
