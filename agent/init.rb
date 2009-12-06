@@ -1,1 +1,2 @@
 register JabberNotification.new
+register MailNotification.new

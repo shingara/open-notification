@@ -1,0 +1,7 @@
+require 'mail'
+
+Mail.defaults do
+   smtp '127.0.0.1' # Port 25 defult
+end
+
+FROM_MAIL = XXXX
