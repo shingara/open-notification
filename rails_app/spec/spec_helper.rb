@@ -26,3 +26,8 @@ module Nanite
     # Need mock to use it
   end
 end
+
+class ActionController::TestCase
+  include Devise::TestHelpers
+end
+

@@ -23,6 +23,7 @@ end
 
 Factory.define :message do |m|
   m.body { /[:paragraph:]/.gen }
+  m.subject { /\w+/.gen }
   m.from_id { Factory(:user).id }
   m.message_kinds { [Factory.build(:jabber)] }
 end

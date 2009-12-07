@@ -23,8 +23,6 @@ class Message
       message_kinds.build(value)
     end
   end
-  
-
 
   def send_notification
     message_kinds.each do |m|

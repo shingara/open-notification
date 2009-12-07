@@ -25,7 +25,7 @@ describe Message do
     it 'should request nanite when message is create' do
       message = Factory.build(:message)
       jabber = message.message_kinds.first
-      jabber.expects(:notification).with('/jabber_notification/notif', message.body)
+      jabber.expects(:notification).with('/jabber_notification/notif', message.subject, message.body)
       message.save
     end
   end
