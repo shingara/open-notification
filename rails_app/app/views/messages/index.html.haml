@@ -6,12 +6,14 @@
         %thead
           %tr
             %th.first Id
+            %th Subject
             %th Body
             %th.last Requested at
         %tbody
           - @messages.each do |message|
             %tr{:class => "#{cycle('odd','even')} jabber" }
               %td 1
+              %td= message.subject
               %td= message.body
               %td= message.created_at
             %tr
@@ -19,7 +21,7 @@
                 %ul
                   - message.message_kinds.each do |kind|
                     %li
-                      Send to 
+                      Send to
                       = kind.to
                       by
                       = kind.channel
