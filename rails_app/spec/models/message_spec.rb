@@ -28,6 +28,16 @@ describe Message do
       Factory.build(:message, :ip => 'an ip').should_not be_valid
     end
 
+    it 'should not valid if ip already override his hour quota' do
+      configatron.limit.ip.by_hour = 3
+      3.of { Factory(:message, :ip => '192.168.0.1') }
+      Factory.build(:message, :ip => '192.168.0.1').should_not be_valid
+    end
+
+    it 'should not valid if ip already override his month quota'
+    it 'should not valid if user already override hist hour quota'
+    it 'should not valid if user already override hi month quota'
+
   end
 
   describe '#send_notification' do

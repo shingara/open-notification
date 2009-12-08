@@ -11,6 +11,9 @@ class Message
   timestamps!
 
   validates_format_of :ip, :with => /\d+\.\d+\.\d+\.\d+/
+  validates_true_for :ip,
+    :logic => lambda { overflow_quota },
+    :message => "you are over quota"
 
   belongs_to :from, :class_name => 'User'
   has_many :message_kinds
@@ -39,6 +42,10 @@ class Message
   # get number of this message for this user
   def define_num
     self.num ||= from.new_num_message
+  end
+
+  def overflow_quota
+    configatron.limit.ip.by_hour > Message.count(:ip => self.ip)
   end
 
 

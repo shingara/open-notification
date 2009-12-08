@@ -49,4 +49,5 @@ Rails::Initializer.run do |config|
   # gem generate from will_paginate agnostic branch. change it when it's possible
   config.gem 'agnostic-will_paginate', :version => '3.0.0', :lib => 'will_paginate'
   config.gem 'nanite', :version => '0.4.1.13'
+  config.gem 'configatron', :version => '2.5.1'
 end

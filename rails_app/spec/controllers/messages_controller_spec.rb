@@ -33,7 +33,6 @@ describe MessagesController do
   end
 
   describe 'with user logged' do
-
     describe 'POST' do
     end
   end
