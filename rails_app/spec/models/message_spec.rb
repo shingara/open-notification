@@ -32,6 +32,12 @@ describe Message do
       configatron.limit.ip.by_hour = 3
       3.of { Factory(:message, :ip => '192.168.0.1') }
       Factory.build(:message, :ip => '192.168.0.1').should_not be_valid
+      Timecop.travel(50.minutes.since)
+      Factory.build(:message, :ip => '192.168.0.1').should_not be_valid
+      Timecop.return
+      Timecop.travel(70.minutes.since)
+      # the hour is passed
+      Factory.build(:message, :ip => '192.168.0.1').should be_valid
     end
 
     it 'should not valid if ip already override his month quota'

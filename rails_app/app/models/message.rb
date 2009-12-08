@@ -45,7 +45,7 @@ class Message
   end
 
   def overflow_quota
-    configatron.limit.ip.by_hour > Message.count(:ip => self.ip)
+    configatron.limit.ip.by_hour > Message.count(:ip => self.ip, :created_at.gt => 1.hour.ago.time)
   end
 
 
