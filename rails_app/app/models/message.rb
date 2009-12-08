@@ -4,11 +4,12 @@ class Message
 
   key :subject, String
   key :body, String, :required => true
-  key :from_id, ObjectId, :required => true
+  key :from_id, ObjectId, :required => true, :index => true
   key :num, Integer, :required => true
-  key :ip, String, :required => true # The ip to propose this message
+  key :ip, String, :required => true, :index => true # The ip to propose this message
 
   timestamps!
+  ensure_index :created_at
 
   validates_format_of :ip, :with => /\d+\.\d+\.\d+\.\d+/
   validates_true_for :ip,
@@ -45,7 +46,10 @@ class Message
   end
 
   def overflow_quota
-    configatron.limit.ip.by_hour > Message.count(:ip => self.ip, :created_at.gt => 1.hour.ago.time)
+    configatron.limit.ip.by_hour > Message.count(:ip => self.ip, :created_at.gt => 1.hour.ago.time) &&
+    configatron.limit.ip.by_month > Message.count(:ip => self.ip, :created_at.gt => 1.month.ago.time) &&
+    configatron.limit.user.by_hour > Message.count(:from_id => self.from_id, :created_at.gt => 1.hour.ago.time) &&
+    configatron.limit.user.by_month > Message.count(:from_id => self.from_id, :created_at.gt => 1.month.ago.time)
   end
 
 

@@ -8,6 +8,9 @@ describe Message do
   end
 
   describe 'validations' do
+    before do
+      Timecop.return
+    end
     it "should not valid if no text" do
       Factory.build(:message, :body => '').should_not be_valid
     end
@@ -38,11 +41,52 @@ describe Message do
       Timecop.travel(70.minutes.since)
       # the hour is passed
       Factory.build(:message, :ip => '192.168.0.1').should be_valid
+      configatron.limit.ip.by_hour = 100
     end
 
-    it 'should not valid if ip already override his month quota'
-    it 'should not valid if user already override hist hour quota'
-    it 'should not valid if user already override hi month quota'
+    it 'should not valid if ip already override his month quota' do
+      configatron.limit.ip.by_hour = 100 # it's not good. use only in test
+      configatron.limit.ip.by_month = 10
+      10.of { Factory(:message, :ip => '192.168.0.1') }
+      Factory.build(:message, :ip => '192.168.0.1').should_not be_valid
+      Timecop.travel(1.month.since - 1.day)
+      Factory.build(:message, :ip => '192.168.0.1').should_not be_valid
+      Timecop.return
+      Timecop.travel(1.month.since + 1.day)
+      # the hour is passed
+      Factory.build(:message, :ip => '192.168.0.1').should be_valid
+      configatron.limit.ip.by_month = 100
+    end
+
+    it 'should not valid if user already override his hour quota' do
+      configatron.limit.user.by_hour = 10
+      configatron.limit.user.by_month = 100
+      user = Factory(:user)
+      10.of { Factory(:message, :from_id => user.id) }
+      Factory.build(:message, :from_id => user.id).should_not be_valid
+      Timecop.travel(50.minutes.since)
+      Factory.build(:message, :from_id => user.id).should_not be_valid
+      Timecop.return
+      Timecop.travel(1.hour.since)
+      # one month is passed
+      Factory.build(:message, :from_id => user.id).should be_valid
+      configatron.limit.user.by_hour = 100
+    end
+
+    it 'should not valid if user already override his month quota' do
+      configatron.limit.user.by_hour = 100 # it's not good. use only in test
+      configatron.limit.user.by_month = 10
+      user = Factory(:user)
+      10.of { Factory(:message, :from_id => user.id) }
+      Factory.build(:message, :from_id => user.id).should_not be_valid
+      Timecop.travel(1.month.since - 1.day)
+      Factory.build(:message, :from_id => user.id).should_not be_valid
+      Timecop.return
+      Timecop.travel(1.month.since + 1.day)
+      # one month is passed
+      Factory.build(:message, :from_id => user.id).should be_valid
+      configatron.limit.user.by_month = 100
+    end
 
   end
 
