@@ -19,6 +19,7 @@ describe Message do
     it 'should not valid if message_kinds without to' do
       Factory.build(:message, :message_kinds => [Factory.build(:jabber, :to => '')]).should_not be_valid
     end
+
   end
 
   describe '#send_notification' do
@@ -27,6 +28,25 @@ describe Message do
       jabber = message.message_kinds.first
       jabber.expects(:notification).with('/jabber_notification/notif', message.subject, message.body)
       message.save
+    end
+  end
+
+  describe 'callback' do
+    it 'should increment num message with new message on same from' do
+      user = Factory(:user)
+      message_1 = Factory(:message, :from_id => user.id)
+      message_1.num.should == 1
+      message_2 = Factory(:message, :from_id => user.id)
+      message_2.num.should == 2
+    end
+
+    it 'should not increment value num if other from' do
+      user_1 = Factory(:user)
+      message_1 = Factory(:message, :from_id => user_1.id)
+      message_1.num.should == 1
+      user_2 = Factory(:user)
+      message_2 = Factory(:message, :from_id => user_2.id)
+      message_2.num.should == 1
     end
   end
 end

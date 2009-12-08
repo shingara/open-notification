@@ -5,11 +5,14 @@ class Message
   key :subject, String
   key :body, String, :required => true
   key :from_id, ObjectId, :required => true
+  key :num, Integer, :required => true
 
   timestamps!
 
-  belongs_to :from, :class_name => User
+  belongs_to :from, :class_name => 'User'
   has_many :message_kinds
+
+  before_validation :define_num
 
   after_create :send_notification
 
@@ -29,5 +32,11 @@ class Message
       m.send_notification
     end
   end
+
+  # get number of this message for this user
+  def define_num
+    self.num ||= from.new_num_message
+  end
+
 
 end
