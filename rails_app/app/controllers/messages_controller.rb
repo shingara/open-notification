@@ -17,6 +17,7 @@ class MessagesController < ApplicationController
 
   def create
     @message = Message.new(params[:message].merge(:from => current_user))
+    @message.ip = request.remote_ip
     if @message.save
       if params[:api_key]
         render :text => ['success'].to_json, :status => 200

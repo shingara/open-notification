@@ -20,6 +20,14 @@ describe Message do
       Factory.build(:message, :message_kinds => [Factory.build(:jabber, :to => '')]).should_not be_valid
     end
 
+    it 'should not valid if no IP' do
+      Factory.build(:message, :ip => '').should_not be_valid
+    end
+
+    it 'should not valid with a bad IP format' do
+      Factory.build(:message, :ip => 'an ip').should_not be_valid
+    end
+
   end
 
   describe '#send_notification' do

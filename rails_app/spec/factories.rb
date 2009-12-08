@@ -26,6 +26,7 @@ Factory.define :message do |m|
   m.subject { /\w+/.gen }
   m.from_id { Factory(:user).id }
   m.message_kinds { [Factory.build(:jabber)] }
+  m.ip { '127.0.0.1' }
 end
 
 Factory.define :jabber, :class => :message_kind do |j|

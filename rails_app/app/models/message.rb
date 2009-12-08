@@ -6,8 +6,11 @@ class Message
   key :body, String, :required => true
   key :from_id, ObjectId, :required => true
   key :num, Integer, :required => true
+  key :ip, String, :required => true # The ip to propose this message
 
   timestamps!
+
+  validates_format_of :ip, :with => /\d+\.\d+\.\d+\.\d+/
 
   belongs_to :from, :class_name => 'User'
   has_many :message_kinds
