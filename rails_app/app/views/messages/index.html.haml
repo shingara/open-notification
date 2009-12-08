@@ -12,7 +12,7 @@
         %tbody
           - @messages.each do |message|
             %tr{:class => "#{cycle('odd','even')} jabber" }
-              %td 1
+              %td= message.num
               %td= message.subject
               %td= message.body
               %td= message.created_at

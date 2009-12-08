@@ -40,6 +40,17 @@ describe Message do
       message_2.num.should == 2
     end
 
+    it 'should not increment data if message not save because invalid' do
+      pending
+      # TODO: search how made an copy it to oupsnow
+      user = Factory(:user)
+      Factory.build(:message, :body => '', :from_id => user.id).save
+      message_1 = Factory(:message, :from_id => user.id)
+      user = user.reload
+      user.messages.size.should == 1
+      message_1.num.should == 1
+    end
+
     it 'should not increment value num if other from' do
       user_1 = Factory(:user)
       message_1 = Factory(:message, :from_id => user_1.id)
