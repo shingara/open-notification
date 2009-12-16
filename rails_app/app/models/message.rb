@@ -7,6 +7,7 @@ class Message
   key :from_id, ObjectId, :required => true, :index => true
   key :num, Integer, :required => true
   key :ip, String, :required => true, :index => true # The ip to propose this message
+  key :content_type, String
 
   timestamps!
   ensure_index :created_at

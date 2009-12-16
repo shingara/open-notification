@@ -19,7 +19,10 @@ class MessageKind
   end
 
   def notification(url, subject, text)
-    Nanite.request(url, {'to' => self.to, 'subject' => subject, 'body' => text}) { |response| update_send_at }
+    Nanite.request(url, {'to' => self.to,
+                   'subject' => subject,
+                   'content-type' => _root_document.content_type,
+                   'body' => text}) { |response| update_send_at }
   end
 
   def update_send_at
