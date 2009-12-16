@@ -38,6 +38,7 @@ class MessagesController < ApplicationController
       params[:message] = {}
       params[:message][:body] = params[:body]
       params[:message][:subject] = params[:subject]
+      params[:message][:content_type] = params[:content_type]
       params[:message][:message_kinds_attributes] = {}
       params[:message_kinds].each do |index, kinds|
         params[:message][:message_kinds_attributes][index] = {}
