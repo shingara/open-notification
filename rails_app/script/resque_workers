@@ -1,0 +1,113 @@
+#!/usr/bin/ruby
+
+# Slightly modified version the example provided in the barmstrong-daemon-spawn gem
+# (see http://github.com/barmstrong/daemon-spawn/blob/master/README.txt)
+
+require 'rubygems'
+require 'optparse'
+
+options ={:pid_dir => 'tmp/pids', :count => 1, :log_dir => 'log', :queues => '*', :interval => 5, :root_dir => '.'}
+command = ARGV.pop
+
+opts = OptionParser.new do |opts|
+  opts.banner = "Usage: resque-worker [-flag] [argument]"
+  opts.define_head "Resque-worker can start and stop all resque:works."
+  opts.separator '*'*80
+
+  opts.on("-q", "--queue QUEUES", "What queue to fetch by this worker. If no argument, * by default") do |queue|
+    options[:queues] = queue.split(',')
+  end
+
+  opts.on("-e", "--environment ENV", "The Rails environement to use with this worker RAILS_ENV by default") do |env|
+    RAILS_ENV = env
+  end
+
+  opts.on("-v", "--verbose", "logging verbose") do
+    options[:verbose] = true
+  end
+
+  opts.on("-vv", "--very_verbose", "logging very verbose") do
+    options[:very_verbose] = true
+  end
+
+  opts.on('-i', '--interval SECOND',Integer, 'interval of sleep in worker') do |interval|
+    options[:interval] = interval
+  end
+
+  opts.on('-d', '--daemon','daemonize your workers') do
+    options[:daemon] = true
+  end
+
+  opts.on('--pids-dir DIR', 'directory where puts your pids') do |dir|
+    options[:pid_dir] = dir
+  end
+
+  opts.on('--root-dir DIR', 'directory where we need start workers') do |dir|
+    options[:root_dir] = dir
+  end
+
+  opts.on('--log-dir DIR', 'directory where we write log') do |dir|
+    options[:log_dir] = dir
+  end
+
+  opts.on('-c', '--count NB', Integer, 'number of workers started') do |count|
+    options[:count] = count
+  end
+
+end
+
+opts.parse!
+
+module PidFile
+  def self.store(daemon, pid)
+    File.open(daemon.pid_fn, 'w') {|f| f << pid}
+  end
+
+  def self.recall(daemon)
+    IO.read(daemon.pid_fn).to_i rescue nil
+  end
+end
+
+if options[:daemon]
+
+  if command == 'stop'
+    Dir.chdir(File.join(options[:root_dir], options[:pid_dir]))
+    Dir.glob('resque_worker_*.pid').each do |file_pid|
+      begin
+        pid_file = File.join(options[:root_dir], options[:pid_dir],file_pid)
+        pid = IO.read(pid_file).to_i rescue nil
+        p pid
+        Process.kill("TERM", pid) if pid
+        FileUtils.rm(pid_file)
+      rescue Errno::ESRCH
+        puts "Pid file found, but process was not running. The daemon may have died."
+        next
+      end
+    end
+  end
+  if command == 'start'
+    options[:count].times do |i|
+      fork do
+        Process.setsid
+        exit if fork
+        FileUtils.mkdir_p(options[:pid_dir])
+        FileUtils.mkdir_p(options[:log_dir])
+        File.open(File.join(options[:pid_dir], "resque_worker_#{i}.pid"), 'w') {|f| f << Process.pid}
+        Dir.chdir options[:root_dir] if options[:root_dir]
+        log = File.new(File.join(options[:log_dir],"resque_worker_#{i}.log"), "a")
+        STDIN.reopen "/dev/null"
+        STDOUT.reopen log
+        STDERR.reopen STDOUT
+        require File.join('config', 'environment')
+        worker = Resque::Worker.new(*options[:queues])
+        worker.verbose = options[:verbose] if options[:verbose]
+        worker.very_verbose = options[:very_verbose] if options[:very_verbose]
+        worker.work(options[:interval])
+      end
+      puts "Starting worker #{i}"
+    end
+  end
+end
+
+
+# vim: se ft=ruby :
