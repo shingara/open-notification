@@ -10,3 +10,5 @@ configatron.limit.ip.by_month = 1000
 
 configatron.limit.user.by_hour = 100
 configatron.limit.user.by_month = 1000
+
+configatron.email.from = 'admin@open-notification.com'

@@ -20,13 +20,6 @@ Spec::Runner.configure do |config|
   end
 end
 
-module Nanite
-  def self.request(*args)
-    # made nothing, because no Mapper
-    # Need mock to use it
-  end
-end
-
 class ActionController::TestCase
   include Devise::TestHelpers
 end

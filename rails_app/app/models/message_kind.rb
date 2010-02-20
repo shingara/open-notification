@@ -10,19 +10,19 @@ class MessageKind
 
   def send_notification
     if channel == "jabber"
-      notification('/jabber_notification/notif', _root_document.subject, _root_document.body)
+      notification(JabberNotification, _root_document.subject, _root_document.body)
     elsif channel == 'mail'
-      notification('/mail_notification/notif', _root_document.subject, _root_document.body)
+      notification(MailNotification, _root_document.subject, _root_document.body)
     else
       raise "We can't know this type. Need a nanite agent"
     end
   end
 
-  def notification(url, subject, text)
-    Nanite.request(url, {'to' => self.to,
+  def notification(klass, subject, text)
+    Resque.enqueue(klass, [_root_document.id.to_s, self.id.to_s], {'to' => self.to,
                    'subject' => subject,
                    'content-type' => _root_document.content_type,
-                   'body' => text}) { |response| update_send_at }
+                   'body' => text})
   end
 
   def update_send_at

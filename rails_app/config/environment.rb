@@ -12,7 +12,7 @@ Rails::Initializer.run do |config|
   # -- all .rb files in that directory are automatically loaded.
 
   # Add additional load paths for your own custom dirs
-  # config.load_paths += %W( #{RAILS_ROOT}/extras )
+  config.load_paths += %W( #{RAILS_ROOT}/app/resque )
 
   # Specify gems that this application depends on and have them installed with rake gems:install
   # config.gem "bj"
@@ -39,15 +39,15 @@ Rails::Initializer.run do |config|
   # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}')]
   # config.i18n.default_locale = :de
 
-  config.gem 'mongo', :version => '0.18'
-  config.gem 'mongo_ext', :version => '0.18', :lib => 'mongo'
-  config.gem 'mongo_mapper', :version => '0.6.4'
+  config.gem 'mongo', :version => '0.18.2'
+  config.gem 'mongo_ext', :version => '0.18.2', :lib => 'mongo'
+  config.gem 'mongo_mapper', :version => '0.6.10'
   config.gem 'haml', :version => '2.2.14'
   config.gem 'warden', :version => '0.6.4'
   config.gem 'devise', :version => '0.6.2'
 
   # gem generate from will_paginate agnostic branch. change it when it's possible
   config.gem 'agnostic-will_paginate', :version => '3.0.0', :lib => 'will_paginate'
-  config.gem 'nanite', :version => '0.4.1.13'
+  config.gem 'resque'
   config.gem 'configatron', :version => '2.5.1'
 end
